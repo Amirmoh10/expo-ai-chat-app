@@ -1,9 +1,8 @@
-import { Ionicons } from "@expo/vector-icons";
+import Feather from "@expo/vector-icons/Feather";
 import React from "react";
 import {
   Platform,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -15,12 +14,6 @@ interface PromptInputProps {
   onChangeText: (text: string) => void;
   onSubmit: () => void;
   placeholder?: string;
-  isSearchEnabled?: boolean;
-  isReasonEnabled?: boolean;
-  onSearchToggle?: () => void;
-  onReasonToggle?: () => void;
-  onAttachmentPress?: () => void;
-  onMicrophonePress?: () => void;
 }
 
 export function PromptInput({
@@ -28,12 +21,6 @@ export function PromptInput({
   onChangeText,
   onSubmit,
   placeholder = "Message ChatGPT",
-  isSearchEnabled = false,
-  isReasonEnabled = false,
-  onSearchToggle,
-  onReasonToggle,
-  onAttachmentPress,
-  onMicrophonePress,
 }: PromptInputProps) {
   const insets = useSafeAreaInsets();
   const bottomPadding = Platform.OS === "ios" ? insets.bottom : 12;
@@ -53,73 +40,12 @@ export function PromptInput({
       </View>
 
       <View style={styles.toolbar}>
-        <View style={styles.toolbarLeft}>
-          <TouchableOpacity
-            style={styles.toolbarButton}
-            onPress={onAttachmentPress}
-          >
-            <Ionicons name="add" size={24} color="#000" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.toolbarButtonWithLabel,
-              isSearchEnabled && styles.toolbarButtonActive,
-            ]}
-            onPress={onSearchToggle}
-          >
-            <Ionicons
-              name="globe-outline"
-              size={18}
-              color={isSearchEnabled ? "#FFF" : "#000"}
-            />
-            <Text
-              style={[
-                styles.toolbarButtonLabel,
-                isSearchEnabled && styles.toolbarButtonLabelActive,
-              ]}
-            >
-              Search
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.toolbarButtonWithLabel,
-              isReasonEnabled && styles.toolbarButtonActive,
-            ]}
-            onPress={onReasonToggle}
-          >
-            <Ionicons
-              name="bulb-outline"
-              size={18}
-              color={isReasonEnabled ? "#FFF" : "#000"}
-            />
-            <Text
-              style={[
-                styles.toolbarButtonLabel,
-                isReasonEnabled && styles.toolbarButtonLabelActive,
-              ]}
-            >
-              Reason
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.toolbarButton}
-            onPress={onMicrophonePress}
-          >
-            <Ionicons name="mic-outline" size={20} color="#000" />
-          </TouchableOpacity>
-        </View>
         <TouchableOpacity
-          style={[
-            styles.sendButton,
-            !value.trim() && styles.sendButtonDisabled,
-          ]}
+          style={styles.sendButton}
           onPress={onSubmit}
           disabled={!value.trim()}
         >
-          <Ionicons name="arrow-up" size={24} color="#FFF" />
+          <Feather name="send" size={16} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -151,48 +77,17 @@ const styles = StyleSheet.create({
   toolbar: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     paddingHorizontal: 16,
     paddingTop: 8,
     paddingBottom: 12,
   },
-  toolbarLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  toolbarButton: {
-    padding: 8,
-  },
-  toolbarButtonWithLabel: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    backgroundColor: "#F0F0F0",
-  },
-  toolbarButtonActive: {
-    backgroundColor: "#000",
-  },
-  toolbarButtonLabel: {
-    fontSize: 14,
-    color: "#000",
-    fontWeight: "500",
-  },
-  toolbarButtonLabelActive: {
-    color: "#FFF",
-  },
   sendButton: {
     width: 36,
     height: 36,
-    borderRadius: 18,
+    borderRadius: 8,
     backgroundColor: "#000",
     justifyContent: "center",
     alignItems: "center",
-  },
-  sendButtonDisabled: {
-    backgroundColor: "#999",
   },
 });
