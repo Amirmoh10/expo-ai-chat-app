@@ -20,8 +20,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const [input, setInput] = useState("");
-  const [isSearchEnabled, setIsSearchEnabled] = useState(false);
-  const [isReasonEnabled, setIsReasonEnabled] = useState(false);
 
   const { messages, error, sendMessage } = useChat({
     transport: new DefaultChatTransport({
@@ -83,12 +81,6 @@ export default function App() {
           onChangeText={setInput}
           onSubmit={handleSubmit}
           placeholder="Message ChatGPT"
-          isSearchEnabled={isSearchEnabled}
-          isReasonEnabled={isReasonEnabled}
-          onSearchToggle={() => setIsSearchEnabled(!isSearchEnabled)}
-          onReasonToggle={() => setIsReasonEnabled(!isReasonEnabled)}
-          onAttachmentPress={handleAttachmentPress}
-          onMicrophonePress={handleMicrophonePress}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Markdown from "react-native-markdown-display";
 
 interface MessageProps {
   role: "user" | "assistant" | "system";
@@ -21,18 +22,7 @@ export function Message({ role, children }: MessageProps) {
           : styles.assistantContainer,
       ]}
     >
-      <View
-        style={[
-          styles.bubble,
-          isUser
-            ? styles.userBubble
-            : isSystem
-            ? styles.systemBubble
-            : styles.assistantBubble,
-        ]}
-      >
-        {children}
-      </View>
+      <View style={isUser && styles.userBubble}>{children}</View>
     </View>
   );
 }
@@ -42,7 +32,7 @@ interface MessageTextProps {
 }
 
 export function MessageText({ children }: MessageTextProps) {
-  return <Text style={styles.text}>{children}</Text>;
+  return <Markdown>{children}</Markdown>;
 }
 
 const styles = StyleSheet.create({
@@ -58,20 +48,11 @@ const styles = StyleSheet.create({
   systemContainer: {
     alignItems: "center",
   },
-  bubble: {
-    maxWidth: "80%",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 20,
-  },
   userBubble: {
-    backgroundColor: "#000",
-  },
-  assistantBubble: {
-    backgroundColor: "#F0F0F0",
-  },
-  systemBubble: {
-    backgroundColor: "#E8F4FF",
+    backgroundColor: "#F2F2F2",
+    borderRadius: 100,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
   },
   text: {
     fontSize: 16,
