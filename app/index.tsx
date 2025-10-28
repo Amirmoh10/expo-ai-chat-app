@@ -22,7 +22,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function App() {
   const [input, setInput] = useState("");
 
-  const { messages, error, sendMessage, status } = useChat({
+  const { messages, error, sendMessage, stop, status } = useChat({
     transport: new DefaultChatTransport({
       fetch: expoFetch as unknown as typeof globalThis.fetch,
       api: generateAPIUrl("/api/chat"),
@@ -49,8 +49,8 @@ export default function App() {
       (part) => part.type === "text" && part.text.trim().length > 0
     ) ?? false;
 
-  const shouldShowLoadingIndicator =
-    (status === "submitted" || status === "streaming") && !assistantHasText;
+  const isStreaming = status === "submitted" || status === "streaming";
+  const shouldShowLoadingIndicator = isStreaming && !assistantHasText;
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -90,6 +90,8 @@ export default function App() {
           value={input}
           onChangeText={setInput}
           onSubmit={handleSubmit}
+          onStop={stop}
+          isStreaming={isStreaming}
           placeholder="Message ChatGPT"
         />
       </KeyboardAvoidingView>

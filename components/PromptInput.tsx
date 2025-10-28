@@ -13,6 +13,8 @@ interface PromptInputProps {
   value: string;
   onChangeText: (text: string) => void;
   onSubmit: () => void;
+  onStop?: () => void;
+  isStreaming?: boolean;
   placeholder?: string;
 }
 
@@ -20,6 +22,8 @@ export function PromptInput({
   value,
   onChangeText,
   onSubmit,
+  onStop,
+  isStreaming = false,
   placeholder = "Message ChatGPT",
 }: PromptInputProps) {
   const insets = useSafeAreaInsets();
@@ -36,20 +40,36 @@ export function PromptInput({
           placeholderTextColor="#999"
           multiline
           maxLength={2000}
+          editable={!isStreaming}
         />
       </View>
 
       <View style={styles.toolbar}>
-        <TouchableOpacity
-          style={styles.sendButton}
-          onPress={onSubmit}
-          disabled={!value.trim()}
-        >
-          <Image
-            source={require("@/assets/images/arrow-up.png")}
-            style={styles.sendButtonIcon}
-          />
-        </TouchableOpacity>
+        {isStreaming ? (
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={onStop}
+            disabled={!onStop}
+            accessibilityLabel="Stop generation"
+          >
+            <Image
+              source={require("@/assets/images/rectangle.png")}
+              style={styles.sendButtonIcon}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={onSubmit}
+            disabled={!value.trim()}
+            accessibilityLabel="Send message"
+          >
+            <Image
+              source={require("@/assets/images/arrow-up.png")}
+              style={styles.sendButtonIcon}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
