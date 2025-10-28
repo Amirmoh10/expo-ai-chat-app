@@ -3,7 +3,6 @@ import {
   Conversation,
   LoadingIndicator,
   Message,
-  MessageText,
   PromptInput,
 } from "@/components";
 import { generateAPIUrl } from "@/utils";
@@ -17,6 +16,7 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
+import Markdown from "react-native-markdown-display";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
@@ -68,9 +68,9 @@ export default function App() {
                 switch (part.type) {
                   case "text":
                     return (
-                      <MessageText key={`${m.id}-${i}`}>
+                      <Markdown key={`${m.id}-${i}`} style={markdownStyles}>
                         {part.text}
-                      </MessageText>
+                      </Markdown>
                     );
                   default:
                     return null;
@@ -104,5 +104,104 @@ const styles = StyleSheet.create({
   },
   keyboardView: {
     flex: 1,
+  },
+});
+
+const markdownStyles = StyleSheet.create({
+  body: {
+    color: "#000000",
+    fontFamily: "Inter_400Regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: "400",
+    lineHeight: 22,
+    letterSpacing: -0.3,
+  },
+  heading1: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 30,
+    letterSpacing: -0.8,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  heading2: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 30,
+    letterSpacing: -0.8,
+    marginTop: 0,
+    marginBottom: 8,
+  },
+  heading3: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 30,
+    letterSpacing: -0.8,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  heading4: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 30,
+    letterSpacing: -0.8,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  heading5: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 30,
+    letterSpacing: -0.8,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  heading6: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 30,
+    letterSpacing: -0.8,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  bullet_list: {
+    gap: 12,
+  },
+  bullet_list_icon: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 22,
+    letterSpacing: -0.3,
+  },
+  strong: {
+    color: "#000000",
+    fontFamily: "Inter_700Bold",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 22,
+    letterSpacing: -0.3,
   },
 });

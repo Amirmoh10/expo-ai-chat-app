@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   contentContainer: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
   },
   fab: {
     position: "absolute",

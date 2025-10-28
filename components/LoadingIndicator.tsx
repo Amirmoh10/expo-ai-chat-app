@@ -32,7 +32,7 @@ export function LoadingIndicator() {
 
   return (
     <Animated.Text style={[styles.indicator, { opacity: opacityRef.current }]}>
-      {"\u2022"}
+      {"●"}
     </Animated.Text>
   );
 }
