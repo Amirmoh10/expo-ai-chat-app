@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     color: "#000",
+    fontFamily: "Inter_400Regular",
     minHeight: 40,
     maxHeight: 120,
     paddingVertical: 8,

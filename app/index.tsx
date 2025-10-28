@@ -1,6 +1,7 @@
 import {
   ChatHeader,
   Conversation,
+  LoadingIndicator,
   Message,
   MessageText,
   PromptInput,
@@ -21,7 +22,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function App() {
   const [input, setInput] = useState("");
 
-  const { messages, error, sendMessage } = useChat({
+  const { messages, error, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       fetch: expoFetch as unknown as typeof globalThis.fetch,
       api: generateAPIUrl("/api/chat"),
@@ -39,6 +40,17 @@ export default function App() {
   if (error) {
     Alert.alert("Error", error.message);
   }
+
+  const lastMessage = messages[messages.length - 1];
+  const activeAssistantMessage =
+    lastMessage?.role === "assistant" ? lastMessage : undefined;
+  const assistantHasText =
+    activeAssistantMessage?.parts.some(
+      (part) => part.type === "text" && part.text.trim().length > 0
+    ) ?? false;
+
+  const shouldShowLoadingIndicator =
+    (status === "submitted" || status === "streaming") && !assistantHasText;
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -66,6 +78,12 @@ export default function App() {
               })}
             </Message>
           ))}
+
+          {shouldShowLoadingIndicator && (
+            <Message role="assistant">
+              <LoadingIndicator />
+            </Message>
+          )}
         </Conversation>
 
         <PromptInput
