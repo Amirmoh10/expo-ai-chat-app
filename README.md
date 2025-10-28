@@ -196,7 +196,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## 👨‍💻 Author
 
-Your Name - [Your GitHub](https://github.com/Amirmoh10)
+Amir Ghezala - [Amirmoh10](https://github.com/Amirmoh10)
 
 ## 🙏 Acknowledgments
 
