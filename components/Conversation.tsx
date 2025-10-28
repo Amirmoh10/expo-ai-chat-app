@@ -1,5 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 
 interface ConversationProps {
   children: React.ReactNode;
@@ -8,11 +16,43 @@ interface ConversationProps {
 export function Conversation({ children }: ConversationProps) {
   const scrollViewRef = useRef<ScrollView>(null);
   const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+  const isAtBottomRef = useRef(true);
+  const layoutHeightRef = useRef(0);
 
-  useEffect(() => {
-    // Auto-scroll to bottom when new messages arrive
-    scrollViewRef.current?.scrollToEnd({ animated: true });
-  }, [children]);
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const distanceFromBottom =
+      contentSize.height - (layoutMeasurement.height + contentOffset.y);
+    const isAtBottom = distanceFromBottom <= 24;
+
+    layoutHeightRef.current = layoutMeasurement.height;
+    isAtBottomRef.current = isAtBottom;
+
+    const hasOverflow = contentSize.height > layoutMeasurement.height + 1;
+    setShowScrollToBottom(!isAtBottom && hasOverflow);
+  };
+
+  const handleContentSizeChange = (
+    _contentWidth: number,
+    contentHeight: number
+  ) => {
+    const layoutHeight = layoutHeightRef.current;
+    const hasOverflow = layoutHeight > 0 && contentHeight > layoutHeight + 1;
+
+    if (!hasOverflow) {
+      isAtBottomRef.current = true;
+      setShowScrollToBottom(false);
+      return;
+    }
+
+    if (isAtBottomRef.current) {
+      // Content grew while we were pinned to the bottom; show the scroll to bottom button.
+      isAtBottomRef.current = false;
+      setShowScrollToBottom(true);
+    } else {
+      setShowScrollToBottom(true);
+    }
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -21,13 +61,11 @@ export function Conversation({ children }: ConversationProps) {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         keyboardShouldPersistTaps="handled"
-        onScroll={(e) => {
-          const { layoutMeasurement, contentOffset, contentSize } =
-            e.nativeEvent;
-          const distanceFromBottom =
-            contentSize.height - (layoutMeasurement.height + contentOffset.y);
-          setShowScrollToBottom(distanceFromBottom > 24);
+        onScroll={handleScroll}
+        onLayout={(event) => {
+          layoutHeightRef.current = event.nativeEvent.layout.height;
         }}
+        onContentSizeChange={handleContentSizeChange}
         scrollEventThrottle={16}
       >
         {children}
@@ -36,7 +74,11 @@ export function Conversation({ children }: ConversationProps) {
       {showScrollToBottom && (
         <Pressable
           accessibilityLabel="Scroll to latest message"
-          onPress={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+          onPress={() => {
+            scrollViewRef.current?.scrollToEnd({ animated: true });
+            isAtBottomRef.current = true;
+            setShowScrollToBottom(false);
+          }}
           style={styles.fab}
         >
           <Image
