@@ -1,6 +1,6 @@
-import Feather from "@expo/vector-icons/Feather";
 import React from "react";
 import {
+  Image,
   Platform,
   StyleSheet,
   TextInput,
@@ -45,7 +45,10 @@ export function PromptInput({
           onPress={onSubmit}
           disabled={!value.trim()}
         >
-          <Feather name="send" size={16} color="white" />
+          <Image
+            source={require("@/assets/images/arrow-up.png")}
+            style={styles.sendButtonIcon}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -83,11 +86,16 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   sendButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
+    padding: 7,
+    alignItems: "center",
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: "#000",
     backgroundColor: "#000",
     justifyContent: "center",
-    alignItems: "center",
+  },
+  sendButtonIcon: {
+    width: 18,
+    height: 18,
   },
 });

@@ -40,8 +40,8 @@ export function Conversation({ children }: ConversationProps) {
           style={styles.fab}
         >
           <Image
-            source={require("../../assets/images/arrow-down.png")}
-            style={styles.fabIcon}
+            source={require("@/assets/images/arrow-down.png")}
+            style={styles.scrollToBottomIcon}
           />
         </Pressable>
       )}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  fabIcon: {
+  scrollToBottomIcon: {
     width: 18,
     height: 18,
   },

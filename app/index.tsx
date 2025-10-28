@@ -4,7 +4,7 @@ import {
   Message,
   MessageText,
   PromptInput,
-} from "@/components/ai-elements";
+} from "@/components";
 import { generateAPIUrl } from "@/utils";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
@@ -34,14 +34,6 @@ export default function App() {
 
     sendMessage({ text: input });
     setInput("");
-  };
-
-  const handleAttachmentPress = () => {
-    Alert.alert("Attachments", "File attachment coming soon!");
-  };
-
-  const handleMicrophonePress = () => {
-    Alert.alert("Voice Input", "Voice input coming soon!");
   };
 
   if (error) {
